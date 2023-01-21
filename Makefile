@@ -7,13 +7,11 @@ LIB_PATH = $(BASE_PATH)/lib
 endif
 
 LAUNCHER_DIR = $(LIB_PATH)/pop-launcher
+SCRIPTS_DIR = $(LAUNCHER_DIR)/scripts
 PLUGIN_DIR = $(LAUNCHER_DIR)/plugins
 
-PLUGINS = bitwarden
-
 install:
-  plugin=bitwarden
-  dest=$(PLUGIN_DIR)/$${plugin}; \
-	mkdir -p $${dest}; \
-	install -Dm0755 $${plugin}/bw $${dest}; \
-	install -Dm0644 $${plugin}/*.ron $${dest};
+        dest=$(PLUGIN_DIR)/bitwarden; \
+        mkdir -p $${dest}; \
+        install -Dm0755 bw $${dest}; \
+        install -Dm0644 *.ron $${dest}; \
