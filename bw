@@ -37,7 +37,7 @@ class App(object):
         f.close()
 
         os.system(f"rbw get {self.matches[index]['id']} | tr -d '\\n' | xclip -selection clipboard -in")
-        os.system(f'/usr/bin/notify-send --icon=gcr-key "Password" "Copied {self.matches[index]["name"]} to clipboard"')
+        os.system(f'/usr/bin/notify-send --icon=gtk-authenticationb "Password" "Copied {self.matches[index]["name"]} - {self.matches[index]["user"]}  to clipboard"')
         os.system(f"rbw get {self.matches[index]['id']} | tr -d '\\n' | xclip -selection clipboard -in")
 
         sys.stdout.write('"Close"\n')
