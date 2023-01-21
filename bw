@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import sys
+from subprocess import run
+
+
+# App Class
+
+class App(object):
+
+    def __init__(self):
+        field_names = ["id", "name", "user", "folder"]
+        p = run(
+            ["rbw", "list", "--fields", *field_names],
+            capture_output=True,
+            encoding="utf-8",
+            check=True,
+        )
+        self.passwords = []
+        for l in p.stdout.splitlines():
+            fields = l.split("\t")
+            d = dict(zip(field_names, fields))
+            if d["folder"]:
+                d["path"] = d["folder"] + "/" + d["name"]
+            else:
+                d["path"] = d["name"]
+            self.passwords.append(d)
+
+    def activate(self, index):
+        if not self.matches:
+            return
+
+        f = open("/tmp/bwlog", "w")
+        f.write(f"rbw get {self.matches[index]['id']}")
+        f.close()
+
+        os.system(f"rbw get {self.matches[index]['id']} | tr -d '\\n' | xclip -selection clipboard -in")
+        os.system(f'/usr/bin/notify-send --icon=gcr-key "Password" "Copied {self.matches[index]["name"]} to clipboard"')
+        os.system(f"rbw get {self.matches[index]['id']} | tr -d '\\n' | xclip -selection clipboard -in")
+
+        sys.stdout.write('"Close"\n')
+        sys.stdout.flush()
+
+    def search(self, query):
+        query = query.split(' ', 1)[1]
+        self.matches = []
+        search_fields = ["path", "user"]
+        words = query.lower().split()
+        for p in self.passwords:
+            all_matches = True
+            for w in words:
+                for k in search_fields:
+                    if w in p[k].lower():
+                        break
+                else:
+                    all_matches = False
+                    break
+
+            if all_matches:
+                self.matches.append(p)
+
+        for index, password in enumerate(self.matches):
+            output_name = "{} - {}".format(password['path'],password['user'])
+            sys.stdout.write(json.dumps({
+                'Append': {
+                    'id': index,
+                    'name': output_name,
+                    'description': '',
+                    'keywords': None,
+                    'icon': None,
+                    'exec': None,
+                    'window': None
+                }
+            }))
+            sys.stdout.write('\n')
+
+        sys.stdout.write('"Finished"\n')
+        sys.stdout.flush()
+
+# Main Execution
+
+def main():
+    app = App()
+
+    for line in sys.stdin:
+        try:
+            request = json.loads(line)
+            if 'Search' in request:
+                app.search(request['Search'])
+            elif 'Activate' in request:
+                app.activate(request['Activate'])
+        except json.decoder.JSONDecodeError:
+            pass
+
+if __name__ == '__main__':
+    main()
