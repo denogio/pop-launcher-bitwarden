@@ -7,5 +7,5 @@
         isolate: true
     ),
     bin: (path: "bw"),
-    icon: Name("gcr-key")
+    icon: Name("gtk-authentication")
 )
