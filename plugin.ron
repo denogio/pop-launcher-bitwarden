@@ -1,0 +1,11 @@
+(
+    name: "Bitwarden Password Manager",
+    description: "Syntax: bw <query>",
+    query: (
+        regex: "^bw\\s.*",
+        help: "bw ",
+        isolate: true
+    ),
+    bin: (path: "bw"),
+    icon: Name("gcr-key")
+)
