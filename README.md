@@ -10,5 +10,5 @@ Bitwarden plugin for Pop_OS! pop-launcher - your bitwarden vault always at your 
 Just clone the repo and run `make install`
 ### Usage
 
-First of all configure rbw with `rbw config`
+First of all configure rbw with `rbw config`  
 In pop launcher press bw <search query> to search for your password. Searches in Name, Username and Path. Press enter to put the password into the clipboard.
