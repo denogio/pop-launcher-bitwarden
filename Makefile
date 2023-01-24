@@ -11,7 +11,7 @@ SCRIPTS_DIR = $(LAUNCHER_DIR)/scripts
 PLUGIN_DIR = $(LAUNCHER_DIR)/plugins
 
 install:
-        dest=$(PLUGIN_DIR)/bitwarden; \
-        mkdir -p $${dest}; \
-        install -Dm0755 bw $${dest}; \
-        install -Dm0644 *.ron $${dest}; \
+	dest=$(PLUGIN_DIR)/bitwarden; \
+	mkdir -p $${dest}; \
+	install -Dm0755 bw $${dest}; \
+	install -Dm0644 *.ron $${dest}; \
