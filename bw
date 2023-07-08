@@ -11,6 +11,7 @@ from subprocess import run
 class App(object):
 
     def __init__(self):
+        field_names = ["id", "name", "user", "folder"]
         field_names_string = ",".join(field_names)
         p = run(
             ["rbw", "list", "--fields", field_names_string],
